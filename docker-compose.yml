@@ -1,0 +1,13 @@
+version: '3.5'
+
+services:
+
+  geefeendag:
+    container_name: geefeendag
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:80'
+    environment:
+      - NODE_ENV=development
