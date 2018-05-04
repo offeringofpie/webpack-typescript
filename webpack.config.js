@@ -1,9 +1,19 @@
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const HTMLPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const NotifierPlugin = require('webpack-notifier');
 
 module.exports = {
-  entry: './src/index.ts',
-  devtool: 'inline-source-map',
+  mode: 'development',
+  entry: [__dirname + '/src/index.tsx'],
+  output: {
+    path: __dirname + '/dist',
+    filename: '[name].js'
+  },
+  resolve: {
+    extensions: ['.ts', '.js', '.jsx', '.tsx', '.json', '.css'],
+    modules: ['node_modules']
+  },
   module: {
     rules: [
       {
@@ -13,14 +23,15 @@ module.exports = {
       }
     ]
   },
-  resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ]
-  },
-  output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist')
-  },
   plugins: [
-    new HTMLPlugin()
-  ]
+    new NotifierPlugin({
+      alwaysNotify: true,
+      skipFirstNotification: true
+    }),
+    new HtmlWebpackPlugin({
+      template: __dirname + '/src/index.template.ejs',
+      inject: 'body'
+    })
+  ],
+  performance: { hints: false }
 };
